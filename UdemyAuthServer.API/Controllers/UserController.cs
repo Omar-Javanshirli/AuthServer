@@ -22,13 +22,13 @@ namespace UdemyAuthServer.API.Controllers
             _userService = userService;
         }
 
-        //api/user
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
         {
             return ActionResultInstance(await _userService.CreateUserAsync(createUserDto));
         }
 
+        //bu end point mutleq sekilde token qebul elemelidi bu attibut onu bildirir;
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUser()
