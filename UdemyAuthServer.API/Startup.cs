@@ -39,12 +39,11 @@ namespace UdemyAuthServer.API
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>(); 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IServiceGeneric<,>), typeof(ServiceGeneric<,>));
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            // Add Databse
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer"), sqlOptions =>
@@ -53,7 +52,6 @@ namespace UdemyAuthServer.API
                 });
             });
 
-            //identity 
             services.AddIdentity<UserApp, IdentityRole>(Opt =>
             {
                 Opt.User.RequireUniqueEmail = true;
@@ -61,31 +59,29 @@ namespace UdemyAuthServer.API
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             services.Configure<CustomTokenOption>(Configuration.GetSection("TokenOption"));
+
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
 
-            //Athentication Jeson Web token
             services.AddAuthentication(options =>
             {
-                // elaqelendirilme...
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
-             {
-                 //yoxlanislar etmey ve bezi onemli deyerleri assign etmey.
-                 var tokenOptions = Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
-                 opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                 {
-                     ValidIssuer = tokenOptions.Issuer,
-                     ValidAudience = tokenOptions.Audience[0],
-                     IssuerSigningKey = SignService.GetSymmetricSecurityKey(tokenOptions.SecurityKey),
+            {
+                var tokenOptions = Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
+                opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidIssuer = tokenOptions.Issuer,
+                    ValidAudience = tokenOptions.Audience[0],
+                    IssuerSigningKey = SignService.GetSymmetricSecurityKey(tokenOptions.SecurityKey),
 
-                     ValidateIssuerSigningKey = true,
-                     ValidateAudience = true,
-                     ValidateIssuer = true,
-                     ValidateLifetime = true,
-                     ClockSkew = TimeSpan.Zero
-                 };
-             });
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
             services.AddControllers().AddFluentValidation(optipons =>
             {
@@ -114,8 +110,6 @@ namespace UdemyAuthServer.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            //mutleq yazilmalidi
             app.UseAuthentication();
             app.UseAuthorization();
 
