@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using UdemyAuthServer.Core.DTOs;
 using UdemyAuthServer.Core.Services;
 
 namespace UdemyAuthServer.API.Controllers
 {
+   
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : CustomBaseController

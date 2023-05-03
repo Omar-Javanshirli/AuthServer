@@ -70,10 +70,14 @@ namespace UdemyAuthServer.Service.Services
         {
             var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.RefreshTokenExpiration);
+
+            //gelen key sifreliyiriy
             var securityKey = SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
 
+            //tokenin imzalmagi bu kod vasitesile ediriy
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
+            // Payload hissesini burada ediriy
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
                 issuer: _tokenOption.Issuer,
                 expires: accessTokenExpiration,
@@ -81,8 +85,10 @@ namespace UdemyAuthServer.Service.Services
                  claims: GetClaims(userApp, _tokenOption.Audience),
                  signingCredentials: signingCredentials);
 
-            var handler = new JwtSecurityTokenHandler();
 
+            //tokeni yarada bilmey ucun  bu "JwtSecurityTokenHandler" classdan istifade ediriy
+            var handler = new JwtSecurityTokenHandler();
+            //tokeni bu methodun sahesinde yaradirix.
             var token = handler.WriteToken(jwtSecurityToken);
 
             var tokenDto = new TokenDto
