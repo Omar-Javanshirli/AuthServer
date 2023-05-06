@@ -22,7 +22,7 @@ namespace UdemyAuthServer.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
         {
-            throw new CustomException("bir xeta meydana geldi");
+            //throw new CustomException("bir xeta meydana geldi");
             return ActionResultInstance(await _userService.CreateUserAsync(createUserDto));
         }
 
