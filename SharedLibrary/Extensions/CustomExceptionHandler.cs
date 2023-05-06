@@ -3,12 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using SharedLibrary.Dtos;
 using SharedLibrary.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SharedLibrary.Extensions
 {
@@ -18,27 +13,26 @@ namespace SharedLibrary.Extensions
         {
             app.UseExceptionHandler(config =>
             {
+                //Run middleware => sonlandirici midleware-dir.
                 config.Run(async context =>
                 {
                     context.Response.StatusCode = 500;
                     context.Response.ContentType = "application/json";
 
+                    //bu interface sahesinde xetaleri elde eliyecem =>IExceptionHandlerFeature();
                     var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
 
                     if (errorFeature != null)
                     {
+                        //exception-i elde eliyirem.
                         var ex = errorFeature.Error;
 
                         ErrorDto errorDto = null;
 
                         if (ex is CustomException)
-                        {
                             errorDto = new ErrorDto(ex.Message, true);
-                        }
                         else
-                        {
                             errorDto = new ErrorDto(ex.Message, false);
-                        }
 
                         var response = Response<NoDataDto>.Fail(errorDto, 500);
 

@@ -87,7 +87,9 @@ namespace UdemyAuthServer.API
             {
                 optipons.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
+
             services.UseCustomValidationResponse();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UdemyAuthServer.API", Version = "v1" });
@@ -105,7 +107,10 @@ namespace UdemyAuthServer.API
             }
             else
             {
+                //bu hissede yazilmalidir
+                //app.UseCustomException();
             }
+
             app.UseCustomException();
             app.UseHttpsRedirection();
 
