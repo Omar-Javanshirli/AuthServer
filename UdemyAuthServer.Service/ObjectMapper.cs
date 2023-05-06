@@ -13,6 +13,7 @@ namespace UdemyAuthServer.Service
         {
             var config = new MapperConfiguration(cfg =>
             {
+                //cfg.Internal().MethodMappigEnabled = false;
                 cfg.AddProfile<DtoMapper>();
             });
 
