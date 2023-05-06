@@ -33,5 +33,11 @@ namespace UdemyAuthServer.API.Controllers
         {
             return ActionResultInstance(await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name));
         }
+
+        [HttpPost("CreateUserRoles/{userEmail}")]
+        public async Task<IActionResult> CreateUserRoles(string userEmail)
+        {
+            return ActionResultInstance(await _userService.CreateRoles(userEmail));
+        }
     }
 }
