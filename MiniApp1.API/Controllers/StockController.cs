@@ -18,6 +18,7 @@ namespace MiniApp1.API.Controllers
         [HttpGet]
         public IActionResult GetStock()
         {
+
             var userName = HttpContext.User.Identity.Name;
 
             var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
