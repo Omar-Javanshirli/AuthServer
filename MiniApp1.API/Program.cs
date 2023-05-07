@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using MiniApp1.API.Requirements;
 using SharedLibrary.Configurations;
 using SharedLibrary.Extensions;
+using static MiniApp1.API.Requirements.BirthdateRequirement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("
 var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
 builder.Services.AddCustomTokenAuth(tokenOptions);
 
-//builder.Services.AddSingleton<IAuthorizationHandler, BirthDayRequirementHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, BirthdateRequirementHandler>();
 
 builder.Services.AddAuthorization(opts =>
 {

@@ -11,7 +11,10 @@ namespace MiniApp1.API.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
-        [Authorize(Roles = "admin",Policy ="BakiPolicy,AgePolicy")]
+
+        //bir cox Policy yoxlansimiz oldugu zaman alt-alta atributlar yaza bileriy
+        //[Authorize(Policy ="AgePolicy")]
+        [Authorize(Roles = "admin",Policy ="BakiPolicy")]
         [HttpGet]
         public IActionResult GetStock()
         {
