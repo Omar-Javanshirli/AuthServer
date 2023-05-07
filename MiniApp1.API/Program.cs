@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MiniApp1.API.Requirements;
 using SharedLibrary.Configurations;
 using SharedLibrary.Extensions;
 
@@ -30,10 +31,10 @@ builder.Services.AddAuthorization(opts =>
     });
 
 
-    //opts.AddPolicy("AgePolicy", policy =>
-    //{
-    //    policy.Requirements.Add(new BirthDayRequirement(18));
-    //});
+    opts.AddPolicy("AgePolicy", policy =>
+    {
+        policy.Requirements.Add(new BirthdateRequirement(18));
+    });
 
 
 });
