@@ -43,17 +43,15 @@ namespace UdemyAuthServer.Service.Services
             if (user == null) return Response<TokenDto>.Fail("Email or Password is wrong", 400, true);
 
             if (!await _userManager.CheckPasswordAsync(user, loginDto.Password))
-            {
                 return Response<TokenDto>.Fail("Email or Password is wrong", 400, true);
-            }
+
             var token = _tokenService.CreateToken(user);
 
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
 
             if (userRefreshToken == null)
-            {
                 await _userRefreshTokenService.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.RefreshTokenExpiration });
-            }
+
             else
             {
                 userRefreshToken.Code = token.RefreshToken;
